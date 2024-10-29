@@ -1,0 +1,7 @@
+[System.Convert]::FromBase64String("WjBpaXZTRUJxNHM5ZnZOTA=="): This part calls the static method FromBase64String from the System.Convert class, which takes a Base64-encoded string as an argument and converts it into a byte array.
+
+
+[System.Text.Encoding]::UTF8.GetString(...): This part converts the byte array obtained from the previous step back into a string using UTF-8 encoding.
+
+
+45 $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("WjBpaXZTRUJxNHM5ZnZOTA=="))
