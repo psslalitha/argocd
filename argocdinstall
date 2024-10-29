@@ -1,0 +1,20 @@
+   1 eksctl version
+   2 eksctl create cluster --name=eksc --region=ap-south-1 --zones=ap-south-1a,ap-south-1b --version=1.30 --without-nodegroup
+   3 eksctl create nodegroup --cluster=eksc --region=ap-south-1 --name=ekscng --node-type=t3.medium --nodes=2 --nodes-min=2 --nodes-max=4 --node-volume-size=20 --ssh-access --ssh-public-key=nexus --managed --asg-access --alb-ingress-access --external-dns-access --full-ecr-access --appmesh-access
+   4 aws eks update-kubeconfig --name=eksc --region=ap-south-1
+   5 eksctl utils write-kubeconfig --cluster=eksc
+   6 ls
+  26 kubectl create namespace argocd
+  27 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.4.7/manifests/install.yaml  (to install argocd)
+  28 kubectl get all -n argocd
+  29 kubectl get svc -n argocd
+  33 $env:KUBE_EDITOR = "nano"   #(we are changing the kube editor from "notepad" to "nano" )
+  34 kubectl edit svc argocd-server -n argocd  #( we have change the service cluster ip to nodeport or load balancer)
+  35 kubectl get svc -n argocd
+  38 $env:ARGOCD_SERVER = (kubectl get svc argocd-server -n argocd -o json | jq --raw-output '.status.loadBalancer.ingress[0].hostname')  #(when you run this command, it will export the hostname of the ArgoCD server’s load balancer and store it in the ARGOCD_SERVER environment variable, which you can then use in other commands or scripts to interact with the ArgoCD server. This can be useful when you need to access the ArgoCD web UI or interact with the server programmatically.)
+  39 kubectl get svc -n argocd
+  40 kubectl get svc argocd-server -n argocd
+  42 kubectl get secret argocd-initial-admin-secret -n argocd -o yaml  #( decode password)
+  45  $result = [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String("WjBpaXZTRUJxNHM5ZnZOTA==")) 3( it will decode password)
+  46 echo $result #(it will generate password)
+  70 eksctl delete cluster --name=eksc --region=ap-south-1
